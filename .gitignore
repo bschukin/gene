@@ -1,0 +1,14 @@
+*.iml
+*.ipr
+*.iws
+*.ids
+*.log
+*.temp
+.ice
+.idea
+.gradle
+build
+classes
+node_modules
+
+/ice-core/

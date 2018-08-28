@@ -1,0 +1,139 @@
+@import "antd.css";
+@import "RichEditor.css";
+@import "ice.css";
+
+.logo {
+    width: 200px;
+    height: 54px;
+    background: url(logo.png) no-repeat;
+    background-position-y: bottom;
+    background-size: 152px 54px;
+    margin: 4px;
+    float: left;
+}
+
+.page-content {
+    background: #fff;
+    padding: 10px;
+    margin: 0px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+}
+
+.main-menu {
+    line-height: 64px;
+    display: inline-block;
+}
+
+.ant-menu-submenu.ant-menu-submenu-popup {
+    top: 60px !important;
+}
+
+.ant-menu-vertical.ant-menu-sub {
+    min-width: auto;
+}
+
+.ant-tabs-nav .ant-tabs-tab {
+    margin: 0 10px 0 0 !important;
+}
+
+.ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before,
+.ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before {
+    background-color: #e6f7ff !important;
+}
+.ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span,
+.ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span {
+    color: rgba(0, 0, 0, 0.65) !important;
+}
+
+.ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper > .ant-tree-title,
+.ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper > .ant-tree-title {
+    color: #1890ff !important;
+}
+
+.ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+    background-color: #e6f7ff !important;
+    color: #1890ff !important;
+}
+
+.objects-sidebar {
+    background-color: #fbfbfb;
+    margin: -10px 10px -10px -10px;
+    border-right: 6px solid #f0f2f5;
+    width: 400px;
+}
+
+.objects-content {
+    width: calc(100% - 400px);
+}
+
+.objects-layout-collapsed-sidebar > .objects-sidebar {
+    display: none;
+}
+
+.objects-layout-collapsed-sidebar > .objects-content {
+    width: 100%;
+}
+
+.objects-tree-header {
+    padding: 10px 6px 0px;
+    /*border-bottom: 1px solid #d9d9d9;*/
+}
+
+.objects-tree-toolbar {
+    padding: 6px 0px;
+}
+
+.objects-tree-toolbar > * {
+    margin-right: 4px;
+}
+
+.objects-tree-content.scrollbar {
+    width: 394px;
+}
+
+.objects-filter-dropdown {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    float: right;
+    line-height: 30px;
+}
+
+.objects-tree-content {
+    height: calc(100vh - 155px);
+    overflow-x: hidden;
+}
+
+.objects-tree-content .ant-tree.ant-tree-directory {
+    /*position: initial;*/
+}
+
+.objects-tree-content  .ant-tree li {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+}
+
+.objects-tree-content .ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before,
+.objects-tree-content .ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper:before {
+    border-right: 3px solid #1890ff;
+}
+
+.object-tab {
+    height: calc(100vh - 180px);
+}
+
+.object-fields-tree {
+    height: calc(100vh - 255px);
+}
+
+.filters-toolbar {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.object-edit-form {
+    position: relative;
+    background: rgb(200, 200, 200);
+    padding: 20px;
+    height: calc(100vh - 180px);
+}

@@ -1,0 +1,25 @@
+{
+    "name": "gene-web",
+    "version": "1.0.0",
+    "description": "gene",
+    "main": "gene-web",
+    "dependencies": {
+        "antd": "3.8.0",
+        "draft-js": "0.10.5",
+        "draft-js-export-html": "1.2.0",
+        "react": "16.2.0",
+        "react-dom": "16.2.0",
+        "react-render-html": "0.6.0",
+        "react-router-dom": "4.2.2"
+    },
+    "devDependencies": {
+        "webpack": "*",
+        "webpack-cli": "*",
+        "webpack-dev-server": "*",
+        "source-map-loader": "*"
+    },
+    "scripts": {
+        "dev": "webpack-dev-server --open --mode development --devtool source-map --hot --inline --config webpack.dev.js",
+        "dist": "webpack --optimize-minimize --mode production"
+    }
+}

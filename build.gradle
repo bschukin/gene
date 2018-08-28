@@ -1,0 +1,72 @@
+apply from: 'modules.gradle'
+
+apply plugin: 'azk-git'
+
+gitConfig {
+    product = [
+            root   : [repository: 'test-agent.git', path: '.', ref: "v${versions.product}"],
+            modules: [
+                    [repository: 'ice.git', path: 'ice-core', ref: "v${versions.ice}"]
+            ]
+    ]
+    gitRepos = [urlPrefix: 'ssh://git@bitbucket.bftcom.com:7998/ice/']
+}
+
+buildscript {
+    apply from: 'versions.gradle'
+
+    repositories {
+        jcenter()
+        maven { url "http://kotlin.bintray.com/kotlinx" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+        maven { url "http://jin-server.bft.local:8097/nexus/content/repositories/com.bftcom/" }
+        maven { url 'http://jin-server.bft.local:8097/nexus/content/repositories/BFT_REL'}
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin"
+        classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin"
+        classpath "com.moowork.gradle:gradle-node-plugin"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin"
+        classpath "com.bftcom:azk-gradle-plugin"
+    }
+}
+
+allprojects {
+    apply plugin: 'idea'
+
+    repositories {
+        jcenter()
+        maven { url "http://kotlin.bintray.com/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-dev" }
+        maven { url "http://dl.bintray.com/kotlin/kotlin-js-wrappers" }
+        maven { url "http://dl.bintray.com/kotlin/kotlinx" }
+        maven { url "http://dl.bintray.com/kotlin/kotlinx.html" }
+        maven { url "http://jin-server.bft.local:8097/nexus/content/repositories/com.bftcom/" }
+        maven { url "http://jin-server.bft.local:8097/nexus/content/repositories/missing-artifacts/" }
+    }
+}
+
+idea {
+    project {
+        ipr {
+            withXml { XmlProvider provider ->
+                def vcsMapping = provider.node.component.find { it.@name == 'VcsDirectoryMappings' }
+
+                rootProject.extensions.gitConfig?.product?.modules?.each {
+                    def dir = "\$PROJECT_DIR\$/${it.path}"
+
+                    if (vcsMapping.mapping.find { it.@directory == dir } == null) {
+                        vcsMapping.appendNode('mapping', ['directory': dir])
+                    }
+                }
+                vcsMapping.mapping.each { it.@vcs = 'Git' }
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradle_version
+}

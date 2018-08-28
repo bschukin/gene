@@ -1,0 +1,23 @@
+apply from: 'modules.gradle'
+
+rootProject.name = 'gene'
+
+include ':ice-core-common'
+include ':ice-core-server'
+include ':ice-core-web'
+include ':ice-core-db'
+
+include ':gene-common'
+include ':gene-server'
+include ':gene-web'
+include ':gene-db'
+
+project(':ice-core-common').projectDir = file('ice-core/common')
+project(':ice-core-server').projectDir = file('ice-core/server')
+project(':ice-core-web').projectDir = file('ice-core/web')
+project(':ice-core-db').projectDir = file('ice-core/db')
+
+project(':gene-common').projectDir = file('gene/common')
+project(':gene-server').projectDir = file('gene/server')
+project(':gene-web').projectDir = file('gene/web')
+project(':gene-db').projectDir = file('gene/db')

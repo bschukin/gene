@@ -1,0 +1,23 @@
+apply plugin: 'com.moowork.node'
+
+dependencies {
+    expectedBy project(':gene-common')
+    compile project(':ice-core-web')
+}
+
+task copyDependenciesKotlinJs(type: Copy) {
+    configurations.compile.each {
+        from zipTree(it.absolutePath).matching { include '*.js' }
+    }
+    into "${buildDir}/node_modules"
+}
+
+task webpackRun(type: NpmTask, dependsOn: [npmInstall, compileKotlin2Js, copyDependenciesKotlinJs]) {
+    args = ['run', 'dev']
+}
+
+task webpackBundle(type: NpmTask, dependsOn: [npmInstall, runDceKotlinJs]) {
+    args = ['run', 'dist']
+}
+
+assemble.dependsOn webpackBundle
