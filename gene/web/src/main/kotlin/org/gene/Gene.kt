@@ -1,4 +1,4 @@
-package com.bftcom.saumi.web
+package org.gene
 
 import com.bftcom.ice.common.Role
 import com.bftcom.ice.common.StateGroup

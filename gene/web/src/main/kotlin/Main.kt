@@ -2,8 +2,8 @@ import com.bftcom.ice.web.components.renderApp
 import com.bftcom.ice.web.react.router.hashRouter
 import com.bftcom.ice.web.react.router.route
 import com.bftcom.ice.web.react.router.switch
-import com.bftcom.saumi.web.Gene
-import com.bftcom.saumi.web.IndexPage
+import org.gene.Gene
+import org.gene.IndexPage
 import kotlin.browser.window
 
 object Main {
