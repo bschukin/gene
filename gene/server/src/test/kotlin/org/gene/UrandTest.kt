@@ -41,10 +41,18 @@ public class UrandTest {
         assertEquals(getRandomInt(10), 8)
         assertEquals(getRandomInt(10), 9)
     }
+
+    @Test
+    fun testPointOperations() {
+        var v1 = Point2(1, 1)
+        var v2 = Point2(1, 2)
+
+        assertEquals(distance(v1, v2), 1.0)
+
+
+
+    }
+
+
 }
 
-fun round(d: Double, decimals: Int): Double {
-    var multiplier = 1.0
-    repeat(decimals) { multiplier *= 10 }
-    return round(d * multiplier) / multiplier
-}

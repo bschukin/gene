@@ -2,6 +2,7 @@ package org.gene
 
 import com.bftcom.ice.common.general.SomethingNotFound
 import com.bftcom.ice.common.general.throwImpossible
+import kotlin.math.round
 
 /**
  * Быстрый Генератор случайных чисел для униформного распределения
@@ -63,6 +64,18 @@ fun getRandomPointInBox(Top: Vector2, Bot: Vector2): Vector2 {
             ((Bot.y + 1 - Top.y) * Urand.urand()).toInt() + Top.y)
 }
 
+fun getRandomPointInBox(Top: Point2, Bot: Point2): Point2 {
+    return Point2(((Bot.x + 1 - Top.x) * Urand.urand()).toInt() + Top.x,
+            ((Bot.y + 1 - Top.y) * Urand.urand()).toInt() + Top.y)
+}
 
+fun distance(v1: Point2, v2: Point2): Double {
+    return v1.distance(v2)
+}
 
+fun round(d: Double, decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return round(d * multiplier) / multiplier
+}
 
