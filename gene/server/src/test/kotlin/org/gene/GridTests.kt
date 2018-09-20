@@ -23,7 +23,7 @@ class GridTests {
         Assert.assertEquals(grid2.XY[3][4].charge, Charges.FREE)
 
         //уничтожение
-        grid2.destruct()
+        grid2.reset()
 
     }
 
