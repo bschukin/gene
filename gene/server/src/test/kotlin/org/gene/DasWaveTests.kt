@@ -18,6 +18,10 @@ class DasWaveTests {
 
         daswave.printCoorinates()
 
+        daswave.pNodes.forEach {
+            println(it.toString())
+        }
+
     }
 
 }

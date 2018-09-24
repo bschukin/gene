@@ -42,7 +42,7 @@ class Grid2(
     }
 
     fun chargeXY(pNode: Node2) {
-        XY[pNode.position!!.x][pNode.position!!.y].charge(pNode.type.value)
+        XY[pNode.position!!.x][pNode.position!!.y].charge(pNode)
     }
 
     fun getRandomPointInItsBox(): Point2 {
@@ -66,7 +66,6 @@ class Grid2(
             }
     }
 
-    //todo понять целесообразность
     class Cell2(val point: Point2) {
 
         var charge = Charges.FREE
@@ -81,6 +80,11 @@ class Grid2(
 
         fun charge(value: Byte) {
             charge = value
+        }
+
+        fun charge(node: Node2) {
+            charge(node.type.value)
+            this.node = node
         }
     }
 }

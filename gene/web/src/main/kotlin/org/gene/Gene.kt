@@ -13,7 +13,7 @@ object Gene {
             authorizationRequired = false
         }
         with(config.main) {
-            header = "САУМИ"
+            header = "DasWave 14"
         }
         with(config.server) {
             contextPath = "/app"

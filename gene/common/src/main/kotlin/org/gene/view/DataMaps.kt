@@ -28,10 +28,19 @@ object CellState : MappingFieldSet<CellState>("CellState", "", null, Transience)
     val charge = Field.byte("charge")
 }
 
+object LinkState : MappingFieldSet<LinkState>("LinkState", "", null, Transience)
+{
+    val x1 = Field.int("x")
+    val y1 = Field.int("y")
+    val x2 = Field.int("x")
+    val y2 = Field.int("y")
+}
+
 object GridState : MappingFieldSet<GridState>("GridState", "", null, Transience)
 {
     val top = Field.jsonObj("top", PointState)
     val bottom = Field.jsonObj("bottom", PointState)
 
     val cells  = Field.jsonList("cells", CellState)
+    val links  = Field.jsonList("links", CellState)
 }

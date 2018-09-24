@@ -5,8 +5,6 @@ import com.bftcom.ice.common.general.throwImpossible
 class Node2(var type: NodeType, internal var index: Int) {
 
     var position: Point2? = null
-    var prev: Node2? = null
-    var next: Node2? = null
 
     override fun toString(): String {
         return "Node{" +
@@ -27,7 +25,7 @@ class DasWave(
     private var VU: Int = 0 //количество виртуальынх звеньев в текущий момент
 
     //массив узлов. Внимание это не упорядоченный массив узлов ( по направлению pFirst-PNext).
-    private var pNodes: MutableList<Node2>
+    var pNodes: MutableList<Node2>
 
 
     fun reset() {
