@@ -1,19 +1,34 @@
 package org.gene.d2
 
+import com.bftcom.ice.common.maps.DataMapF
+import com.bftcom.ice.common.maps.dataMapToString
 import com.bftcom.ice.web.components.form.AbstractEditForm
 import com.bftcom.ice.web.components.form.FormProps
 import com.bftcom.ice.web.components.form.FormState
 import com.bftcom.ice.web.css.css
+import com.bftcom.ice.web.dm.JsDataService
+import com.bftcom.ice.web.dm.buildDataMapFromJson
+import com.bftcom.ice.web.utils.async
+import com.bftcom.ice.web.utils.finally
 import kotlinx.html.style
+import org.gene.Charges
+import org.gene.Experiment2Service
+import org.gene.view.CellState
+import org.gene.view.GridState
+import org.gene.view.LinkState
 import react.RBuilder
 import react.dom.canvas
+import react.updateState
+import react.updateStateAsync
 
 
 class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.State>(props) {
 
     interface State : FormState {
+        var loading: Boolean?
         var xLength: Int
         var yLength: Int
+        var gridState: DataMapF<GridState>?
     }
 
     init {
@@ -26,9 +41,33 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
     override fun componentDidMount() {
         super.componentDidMount()
         drawBorder()
+        fetchStateFromServer()
+    }
+
+    private fun fetchStateFromServer() {
+
+        updateState {
+            loading = true
+        }
+        async {
+            JsDataService.remoteCall(
+                    Experiment2Service::class.simpleName!!, Experiment2Service::newExperimentAndState.name)
+        }.then {
+            val dm = buildDataMapFromJson(it.toString())
+            updateState {
+                state.gridState = dm as DataMapF<GridState>
+                drawBorder()
+            }
+        }.finally {
+            updateState { loading = false }
+        }
+
     }
 
     override fun RBuilder.render() {
+        /*if (state.loading == true) {
+            spin(true)
+        }*/
 
         canvas {
             attrs {
@@ -61,6 +100,7 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
         context2d.fillStyle = "gray"
         context2d.lineWidth = 1
 
+        context2d.clearRect(0, 0, _canvas.width, _canvas.height);
 
         val ctx = DrawContext(
                 canvas = _canvas, context2d = context2d,
@@ -70,13 +110,27 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
 
 
         drawGrid(ctx)
-        for (i in 5..10)
-            drawCell(ctx, i, 5, "blue")
-        for (i in 5..10)
-            drawCell(ctx, 14, i, "black");
+        val gr = state.gridState
+        if (gr != null)
+            drawChains(ctx, gr)
+    }
 
-        drawLink(ctx, 5, 5, 6, 5, "blue");
-        drawLink(ctx, 6, 5, 7, 5, "blue");
+    private fun drawChains(ctx: DrawContext, gridState: DataMapF<GridState>) {
+        println(gridState)
+        println(gridState[GridState.links].size)
+        gridState[GridState.cells].forEach { cell ->
+
+            val color = when (cell[CellState.charge]) {
+                Charges.A_UNIT -> "blue"
+                Charges.A_VU -> "black"
+                else -> TODO()
+            }
+            drawCell(ctx, cell[CellState.x], cell[CellState.y], color)
+        }
+        gridState[GridState.links].forEach { link ->
+            drawLink(ctx, link[LinkState.x1], link[LinkState.y1],
+                    link[LinkState.x2], link[LinkState.y2], "blue");
+        }
     }
 
     private fun drawGrid(ctx: DrawContext) {
@@ -134,7 +188,7 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
 
     private fun drawCell(ctx: DrawContext, x1: Int, y1: Int, color: String) {
         ctx.context2d.fillStyle = color;
-        ctx.context2d.fillRect(ctx.marginX + x1 * ctx.edge + 3, ctx.marginY + y1 * ctx.edge + 3, ctx.edge - 6, ctx.edge - 6);
+        ctx.context2d.fillRect(ctx.marginX + x1 * ctx.edge + 5, ctx.marginY + y1 * ctx.edge + 5, ctx.edge - 10, ctx.edge - 10);
 
     }
 

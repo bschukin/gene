@@ -13,7 +13,7 @@
     <jdbc:script location="classpath:db-scripts/0000-init-system-tables.sql"/>
   </jdbc:initialize-database>-->
 
-  <context:component-scan base-package="org.gene.server"/>
+  <context:component-scan base-package="org.gene"/>
 
   <import resource="classpath:com/bftcom/ice/server/server-context.xml"/>
 

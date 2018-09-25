@@ -5,9 +5,10 @@ import org.gene.view.*
 
 interface Experiment2Service {
 
+    fun newExperimentAndState(): DataMapF<GridState>
     fun newExperiment(D: Int, N: Int)
     fun initLineInstance()
-    fun getGridStateForView():DataMapF<GridState>
+    fun getGridStateForView(): DataMapF<GridState>
 }
 
 class Experiment2(val D: Int, N: Int) {
@@ -27,7 +28,8 @@ class Experiment2(val D: Int, N: Int) {
     }
 
     fun getGridStateForView(atop: Point2 = Point2(0, 0), abottom: Point2 = Point2(D1, D1)): DataMapF<GridState> {
-        return GridState { state ->
+        val res =  GridState { state ->
+            state[id] = 100
             state[top] = PointState.fromPoint(atop)
             state[bottom] = PointState.fromPoint(abottom)
             grid.doWithEveryCellInBox(
@@ -42,8 +44,28 @@ class Experiment2(val D: Int, N: Int) {
                                         cs[charge] = cell.charge
                                     })
                         }
+                        val node = cell.node
+                        if (node != null) {
+                            if (node.prevVisible() != null) {
+                                state[links].add(LinkState { ls ->
+                                    ls[x1] = node.position!!.x
+                                    ls[y1] = node.position!!.y
+                                    ls[x2] = node.prevVisible()!!.position!!.x
+                                    ls[y2] = node.prevVisible()!!.position!!.y
+                                })
+                            }
+                            if (node.nextVisible() != null) {
+                                state[links].add(LinkState { ls ->
+                                    ls[x1] = node.position!!.x
+                                    ls[y1] = node.position!!.y
+                                    ls[x2] = node.nextVisible()!!.position!!.x
+                                    ls[y2] = node.nextVisible()!!.position!!.y
+                                })
+                            }
+                        }
                     }, atop, abottom)
         }
+        return res
     }
 
 }

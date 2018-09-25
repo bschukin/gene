@@ -2,7 +2,7 @@ package org.gene
 
 import com.bftcom.ice.common.general.throwImpossible
 
-class Node2(var type: NodeType, internal var index: Int) {
+class Node2(var type: NodeType, internal var index: Int, var chain:DasWave) {
 
     var position: Point2? = null
 
@@ -12,6 +12,28 @@ class Node2(var type: NodeType, internal var index: Int) {
                 ", position=" + position +
                 ", index=" + index +
                 '}'.toString()
+    }
+
+    fun isLast():Boolean = this.index == chain.pNodes.size-1
+    fun isFirst():Boolean = this.index == 0
+    fun isVisible():Boolean = this.position!=null
+    fun next():Node2? = if(isLast()) null else chain.pNodes[index+1]
+    fun prev():Node2? = if(isFirst()) null else chain.pNodes[index-1]
+
+    fun nextVisible():Node2?
+    {
+        val pNext = next() ?: return null
+        if(pNext.isVisible())
+            return pNext
+        return pNext.nextVisible()
+    }
+
+    fun prevVisible():Node2?
+    {
+        val pPrev = prev() ?: return null
+        if(pPrev.isVisible())
+            return pPrev
+        return pPrev.prevVisible()
     }
 }
 
@@ -37,7 +59,7 @@ class DasWave(
         for (i in 0 until NU) {
             //реальные звенья
             val type = if (i % 2 == 0) NodeType.A_UNIT else NodeType.A_VU
-            pNodes.add(Node2(type, i))
+            pNodes.add(Node2(type, i, this))
         }
     }
 
