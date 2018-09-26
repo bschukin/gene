@@ -17,6 +17,15 @@ data class Point2(
         return Point2(x + v2.x, y + v2.y)
     }
 
+    operator fun plus(v2:Point2):Point2
+    {
+        return Point2(x + v2.x, y + v2.y)
+    }
+
+    operator fun div(v2:Int):Point2
+    {
+        return Point2(x / v2, y / v2)
+    }
 }
 
 data class Vector2(
@@ -30,6 +39,11 @@ data class Vector2(
     operator fun plus(v2:Vector2):Vector2
     {
         return Vector2(x + v2.x, y + v2.y)
+    }
+
+    operator fun plus(v2:Point2):Point2
+    {
+        return Point2(x + v2.x, y + v2.y)
     }
 }
 

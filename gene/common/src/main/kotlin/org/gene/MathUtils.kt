@@ -2,6 +2,7 @@ package org.gene
 
 import com.bftcom.ice.common.general.SomethingNotFound
 import com.bftcom.ice.common.general.throwImpossible
+import kotlin.math.abs
 import kotlin.math.round
 
 /**
@@ -49,7 +50,6 @@ object Urand {
     }
 
 
-
 }
 
 fun urand() = Urand.urand()
@@ -79,3 +79,19 @@ fun round(d: Double, decimals: Int): Double {
     return round(d * multiplier) / multiplier
 }
 
+
+//получение линеаризованного расстояния
+// 0:=0; 1:=1; sqrt2:=2; 2:=3; sqrt(5):=4; 3:=5; (A>3):=13;
+fun dist1(v1: Point2, v2: Point2?): Int {
+    if(v2==null)
+        return -1
+
+    val dx = abs(v1.x - v2.x)
+    val dy = abs(v1.y - v2.y)
+    if (dx == 0 && dy == 0) return 0
+    if ((dx == 1 && dy == 0) || (dx == 0 && dy == 1)) return 1;
+    if (dx == 1 && dy == 1) return 2
+    if ((dx == 2 && dy == 0) || (dx == 0 && dy == 2)) return 3;
+
+    return 13;
+}

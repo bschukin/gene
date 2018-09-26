@@ -1,12 +1,13 @@
 package org.gene
 
 /**
- * Непериодическа решетка [0,0]x[D-1, D-1]
+ * Периодическая решетка [0,0]x[D-1, D-1]
  */
 class Grid2(
         //размер решетки
-        val D: Int = 0) {
-    private val D1 = D - 1
+        val D: Int) {
+
+    val D1 = D-1
 
     //матрица
     val XY: Array<Array<Cell2>> = Array(D,
@@ -30,19 +31,21 @@ class Grid2(
     }
 
     fun getChargeXY(lat: Point2): Byte {
-        return XY[lat.x][lat.y].charge
+        return XY[D1 and lat.x][D1 and lat.y].charge
     }
 
     fun freeXY(lat: Point2) {
-        XY[lat.x][lat.y].charge(Charges.FREE)
+        chargeXY(lat, Charges.FREE)
     }
 
     fun chargeXY(lat: Point2, charger: Byte) {
-        XY[lat.x][lat.y].charge(charger)
+        XY[D1 and lat.x][D1 and lat.y ].charge(charger)
     }
 
     fun chargeXY(pNode: Node2) {
-        XY[pNode.position!!.x][pNode.position!!.y].charge(pNode)
+        val x = D1 and pNode.position!!.x
+        val y = D1 and pNode.position!!.y
+        XY[x][y].charge(pNode)
     }
 
     fun getRandomPointInItsBox(): Point2 {
@@ -80,11 +83,18 @@ class Grid2(
 
         fun charge(value: Byte) {
             charge = value
+            node = null
         }
 
         fun charge(node: Node2) {
             charge(node.type.value)
             this.node = node
         }
+
+        override fun toString(): String {
+            return "(point=$point, charge=$charge)"
+        }
+
+
     }
 }

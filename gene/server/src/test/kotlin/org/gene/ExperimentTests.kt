@@ -10,10 +10,54 @@ class ExperimentTests {
     @Test
     public fun testCreateLineInstance()
     {
-       val e = Experiment2(10, 5)
-        e.initLineConformation(true, Point2(0,0))
+       val e = Experiment2(16, 4)
+        e.initLineConformation(true, Point2(4,4))
 
+        e.grid.print()
+        println("=========")
+        var x = e.chain.tryRandomMove()
+        println(x)
         //e.getGridStateForView().printAsJson(false)
+        //e.grid.print()
+
+        println("=========")
+         x = e.chain.tryRandomMove()
+        println(x)
+        e.grid.print()
+
+        println("=========")
+        x = e.chain.tryRandomMove()
+        println(x)
+        e.grid.print()
+
+        println("=========")
+        x = e.chain.tryRandomMove()
+        println(x)
+        e.grid.print()
+
+        println("=========")
+        x = e.chain.tryRandomMove()
+        println(x)
+        e.grid.print()
+
+        println("=========")
+        x = e.chain.tryRandomMove()
+        println(x)
+        e.grid.print()
+
+        println("=========")
+        x = e.chain.tryRandomMove()
+        println(x)
+        e.grid.print()
+
+        println("=========")
+        x = e.chain.tryRandomMove()
+        println(x)
+        e.grid.print()
+
+        println("=========")
+        x = e.chain.tryRandomMove()
+        println(x)
         e.grid.print()
     }
 

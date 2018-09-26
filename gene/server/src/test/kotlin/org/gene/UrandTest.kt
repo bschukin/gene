@@ -26,6 +26,24 @@ public class UrandTest {
     }
 
     @Test
+    fun testUniformness() {
+        Urand.reset()
+        val counters = mutableMapOf<Int, Int>()
+        for(i in 0..9   )
+            counters[i]  = 0
+
+        val N = 10000000
+        for(i in 1..N) {
+            val random = getRandomInt(10)
+            counters[random] = counters[random]!! + 1
+        }
+        counters.forEach { t, u ->
+            println("$t = ${u/N.toDouble()}")
+        }
+
+    }
+
+    @Test
     fun testIntSequence() {
         Urand.reset()
 

@@ -11,7 +11,7 @@ open class Experiment2ServiceImpl : Experiment2Service {
 
     override fun newExperimentAndState():DataMapF<GridState> {
 
-        newExperiment(10, 5)
+        newExperiment(16, 5)
         initLineInstance()
         return getGridStateForView()
     }

@@ -6,6 +6,20 @@ import java.util.*
 
 class DasWaveTests {
 
+
+    @Test
+    public fun testMath()
+    {
+        val D = 16
+        val D1 = 15
+        //println( D1 and 0)
+        /*println( D1 and 1)
+        println( D1 and 2)
+        println( D1 and 14)*/
+        println( D1 and -1)
+
+    }
+
     @Test
     public fun testCreateLineInstance()
     {
