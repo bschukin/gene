@@ -48,6 +48,12 @@ class Grid2(
         XY[x][y].charge(pNode)
     }
 
+    fun nodePositionOnGrid(pNode: Node2):Point2 {
+        val x = pNode.position!!.x
+        val y = pNode.position!!.y
+        return Point2(x, y)
+    }
+
     fun getRandomPointInItsBox(): Point2 {
         return getRandomPointInBox(top, bottom)
     }

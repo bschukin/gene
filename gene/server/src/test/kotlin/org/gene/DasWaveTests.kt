@@ -16,7 +16,7 @@ class DasWaveTests {
         /*println( D1 and 1)
         println( D1 and 2)
         println( D1 and 14)*/
-        println( D1 and -1)
+        println( D1 and 15)
 
     }
 

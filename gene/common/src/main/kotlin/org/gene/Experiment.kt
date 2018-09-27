@@ -8,7 +8,10 @@ interface Experiment2Service {
     fun newExperimentAndState(): DataMapF<GridState>
     fun newExperiment(D: Int, N: Int)
     fun initLineInstance()
-    fun getGridStateForView(): DataMapF<GridState>
+    fun getGridStateForView(): DataMapF<GridState>?
+    fun clear():DataMapF<GridState>?
+
+    fun randomMove():DataMapF<GridState>?
 }
 
 class Experiment2(val D: Int, N: Int) {
@@ -48,10 +51,12 @@ class Experiment2(val D: Int, N: Int) {
                         if (node != null) {
                             if (node.prevVisible() != null) {
                                 state[links].add(LinkState { ls ->
-                                    ls[x1] = node.position!!.x
-                                    ls[y1] = node.position!!.y
-                                    ls[x2] = node.prevVisible()!!.position!!.x
-                                    ls[y2] = node.prevVisible()!!.position!!.y
+                                    val n1 = grid.nodePositionOnGrid(node)
+                                    val n2 = grid.nodePositionOnGrid(node.prevVisible()!!)
+                                    ls[x1] = n1.x
+                                    ls[y1] = n1.y
+                                    ls[x2] = n2.x
+                                    ls[y2] = n2.y
                                 })
                             }
                             if (node.nextVisible() != null) {

@@ -82,7 +82,7 @@ class GridComponent(props: GridProps) : RComponent<GridComponent.GridProps, RSta
 
             val color = when (cell[CellState.charge]) {
                 Charges.A_UNIT -> "blue"
-                Charges.A_VU -> "black"
+                Charges.A_VU -> "#d3d3d3"
                 else -> TODO()
             }
             drawCell(ctx, cell[CellState.x], cell[CellState.y], color)

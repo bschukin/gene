@@ -1,9 +1,12 @@
 package org.gene.d2
 
 import com.bftcom.ice.common.maps.DataMapF
-import com.bftcom.ice.common.maps.Field
 import com.bftcom.ice.common.maps.dataMapToString
-import com.bftcom.ice.web.antd.*
+import com.bftcom.ice.web.antd.InputNumber
+import com.bftcom.ice.web.antd.button
+import com.bftcom.ice.web.antd.col
+import com.bftcom.ice.web.antd.row
+import com.bftcom.ice.web.components.field.fieldGroup
 import com.bftcom.ice.web.components.form.AbstractEditForm
 import com.bftcom.ice.web.components.form.FormProps
 import com.bftcom.ice.web.components.form.FormState
@@ -12,17 +15,13 @@ import com.bftcom.ice.web.dm.JsDataService
 import com.bftcom.ice.web.dm.buildDataMapFromJson
 import com.bftcom.ice.web.utils.async
 import com.bftcom.ice.web.utils.finally
-import kotlinx.html.InputType
 import kotlinx.html.style
-import org.gene.Charges
 import org.gene.Experiment2Service
-import org.gene.view.CellState
 import org.gene.view.GridState
-import org.gene.view.LinkState
 import react.RBuilder
-import react.dom.*
+import react.dom.div
+import react.dom.label
 import react.updateState
-import react.updateStateAsync
 
 
 class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.State>(props) {
@@ -35,10 +34,10 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
 
     override fun componentDidMount() {
         super.componentDidMount()
-        fetchStateFromServer()
+        exec(Experiment2Service::getGridStateForView.name)
     }
 
-    private fun fetchStateFromServer() {
+    private fun exec(functionName: String) {
 
         updateState {
             loading = true
@@ -46,11 +45,13 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
         async {
             JsDataService.remoteCall(
                     Experiment2Service::class.simpleName!!,
-                    Experiment2Service::newExperimentAndState.name)
+                    functionName)
         }.then {
             val dm = buildDataMapFromJson(it.toString())
+            if (dm != null)
+                println(dm.dataMapToString())
             updateState {
-                state.gridState = dm as DataMapF<GridState>
+                gridState = dm as? DataMapF<GridState>
             }
         }.finally {
             updateState { loading = false }
@@ -58,41 +59,67 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
 
     }
 
+    var N: Number = 5
     override fun RBuilder.render() {
-        table {
-            attrs {
-                style = css {
-                    margin = "30px"
-                }
-            }
-            tr {
-                td {
-                    child(GridComponent::class) {
-                        attrs {
-                            this.gridState = state.gridState
-                        }
+        row {
+            col(14) {
+                child(GridComponent::class) {
+                    attrs {
+                        this.gridState = state.gridState
                     }
                 }
-                td {
+            }
+
+            col(6) {
+                fieldGroup("Управление") {
+                    div {
+
+                        InputNumber {
+                            attrs {
+                                value = N
+                                onChange = { N = it }
+                            }
+                        }
+                        label { +"   Кол-во звеньев" }
+                    }
                     div {
                         attrs {
                             style = css {
-                                margin = "30px"
+                                paddingTop = "20px"
                             }
                         }
-                        div {
-                            label { +"Звеньев: " }
-                            InputNumber {
+                        button("Новый эксперимент",
+                                onClick = { exec(Experiment2Service::newExperimentAndState.name) })
+                    }
+                    div {
+                        attrs {
+                            style = css {
+                                paddingTop = "10px"
+                            }
+                        }
+                        button("1 успешный ход",
+                                disabled = state.gridState == null,
+                                onClick = { exec(Experiment2Service::randomMove.name) })
+                    }
 
+                    div {
+                        attrs {
+                            style = css {
+                                paddingTop = "50px"
                             }
                         }
-                        button("Нажми мене")
+                        button("Очистить",
+                                disabled = state.gridState == null,
+                                onClick = { exec(Experiment2Service::clear.name) })
                     }
                 }
+
             }
+            col(4) {
+
+            }
+
         }
 
     }
-
-
 }

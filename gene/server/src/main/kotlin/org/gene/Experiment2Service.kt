@@ -9,11 +9,11 @@ open class Experiment2ServiceImpl : Experiment2Service {
 
     var experiment2: Experiment2? = null
 
-    override fun newExperimentAndState():DataMapF<GridState> {
+    override fun newExperimentAndState(): DataMapF<GridState> {
 
-        newExperiment(16, 5)
+        newExperiment(16, 2)
         initLineInstance()
-        return getGridStateForView()
+        return getGridStateForView()!!
     }
 
 
@@ -25,8 +25,24 @@ open class Experiment2ServiceImpl : Experiment2Service {
         experiment2!!.initLineConformation(true, Point2(0, 0))
     }
 
-    override fun getGridStateForView(): DataMapF<GridState> {
-        return experiment2!!.getGridStateForView()
+    override fun getGridStateForView(): DataMapF<GridState>? {
+        return experiment2?.getGridStateForView()
     }
+
+    override fun randomMove(): DataMapF<GridState>? {
+        assert(experiment2 != null)
+
+        while (!experiment2!!.chain.tryRandomMove()) {
+        }
+
+        return getGridStateForView()
+    }
+
+
+    override fun clear(): DataMapF<GridState>? {
+        experiment2 = null
+        return null
+    }
+
 
 }
