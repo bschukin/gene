@@ -49,8 +49,8 @@ class Grid2(
     }
 
     fun nodePositionOnGrid(pNode: Node2):Point2 {
-        val x = pNode.position!!.x
-        val y = pNode.position!!.y
+        val x = D1 and pNode.position!!.x
+        val y = D1 and pNode.position!!.y
         return Point2(x, y)
     }
 

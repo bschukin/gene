@@ -4,6 +4,8 @@ import com.bftcom.ice.common.maps.DataMapF
 import com.bftcom.ice.web.css.css
 import kotlinx.html.style
 import org.gene.Charges
+import org.gene.Point2
+import org.gene.dist1
 import org.gene.view.CellState
 import org.gene.view.GridState
 import org.gene.view.LinkState
@@ -88,6 +90,8 @@ class GridComponent(props: GridProps) : RComponent<GridComponent.GridProps, RSta
             drawCell(ctx, cell[CellState.x], cell[CellState.y], color)
         }
         gridState[GridState.links].forEach { link ->
+            if(dist1(Point2( link[LinkState.x1], link[LinkState.y1]),
+                            Point2(link[LinkState.x2], link[LinkState.y2]))<=3)
             drawLink(ctx, link[LinkState.x1], link[LinkState.y1],
                     link[LinkState.x2], link[LinkState.y2], "blue");
         }

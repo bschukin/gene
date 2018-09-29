@@ -47,6 +47,22 @@ data class Vector2(
     }
 }
 
+data class TwoPoints(
+        //координата x
+         val p1: Point2,
+        //координата y
+        val p2: Point2) {
+
+    override fun equals(other: Any?): Boolean {
+        val tp = other as? TwoPoints ?: return false
+
+        if(p1==tp.p1 && p2==tp.p2) return true
+        if(p1==tp.p2 && p2==tp.p1) return true
+
+        return false
+    }
+}
+
 val v_1_1 = Vector2(-1, -1)
 val v0_1 = Vector2(0, -1)
 val v1_1 = Vector2(1, -1)

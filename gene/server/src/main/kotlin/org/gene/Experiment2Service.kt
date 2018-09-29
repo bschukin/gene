@@ -11,7 +11,7 @@ open class Experiment2ServiceImpl : Experiment2Service {
 
     override fun newExperimentAndState(): DataMapF<GridState> {
 
-        newExperiment(16, 2)
+        newExperiment(16, 3)
         initLineInstance()
         return getGridStateForView()!!
     }
@@ -32,8 +32,9 @@ open class Experiment2ServiceImpl : Experiment2Service {
     override fun randomMove(): DataMapF<GridState>? {
         assert(experiment2 != null)
 
-        while (!experiment2!!.chain.tryRandomMove()) {
-        }
+        //for (i in 1..100)
+            while (!experiment2!!.chain.tryRandomMove()) {
+            }
 
         return getGridStateForView()
     }

@@ -9,10 +9,11 @@ interface Experiment2Service {
     fun newExperiment(D: Int, N: Int)
     fun initLineInstance()
     fun getGridStateForView(): DataMapF<GridState>?
-    fun clear():DataMapF<GridState>?
+    fun clear(): DataMapF<GridState>?
 
-    fun randomMove():DataMapF<GridState>?
+    fun randomMove(): DataMapF<GridState>?
 }
+
 
 class Experiment2(val D: Int, N: Int) {
 
@@ -31,12 +32,14 @@ class Experiment2(val D: Int, N: Int) {
     }
 
     fun getGridStateForView(atop: Point2 = Point2(0, 0), abottom: Point2 = Point2(D1, D1)): DataMapF<GridState> {
-        val res =  GridState { state ->
+        val res = GridState { state ->
             state[id] = 100
             state[top] = PointState.fromPoint(atop)
             state[bottom] = PointState.fromPoint(abottom)
-            grid.doWithEveryCellInBox(
 
+            val thelinks = mutableSetOf<TwoPoints>()
+
+            grid.doWithEveryCellInBox(
                     {
                         val cell = this
                         if (cell.charge > Charges.FREE) {
@@ -50,28 +53,36 @@ class Experiment2(val D: Int, N: Int) {
                         val node = cell.node
                         if (node != null) {
                             if (node.prevVisible() != null) {
-                                state[links].add(LinkState { ls ->
-                                    val n1 = grid.nodePositionOnGrid(node)
-                                    val n2 = grid.nodePositionOnGrid(node.prevVisible()!!)
-                                    ls[x1] = n1.x
-                                    ls[y1] = n1.y
-                                    ls[x2] = n2.x
-                                    ls[y2] = n2.y
-                                })
+                                val n1 = grid.nodePositionOnGrid(node)
+                                val n2 = grid.nodePositionOnGrid(node.prevVisible()!!)
+                                val tp = TwoPoints(n1, n2)
+                                if (thelinks.find { it==tp }==null) {
+                                    thelinks.add(tp)
+                                    state[links].add(LinkState { ls ->
+                                        ls[x1] = n1.x
+                                        ls[y1] = n1.y
+                                        ls[x2] = n2.x
+                                        ls[y2] = n2.y
+                                    })
+                                }
                             }
                             if (node.nextVisible() != null) {
-                                state[links].add(LinkState { ls ->
-                                    ls[x1] = node.position!!.x
-                                    ls[y1] = node.position!!.y
-                                    ls[x2] = node.nextVisible()!!.position!!.x
-                                    ls[y2] = node.nextVisible()!!.position!!.y
-                                })
+                                val n1 = grid.nodePositionOnGrid(node)
+                                val n2 = grid.nodePositionOnGrid(node.nextVisible()!!)
+                                val tp = TwoPoints(n1, n2)
+                                if (thelinks.find { it==tp }==null) {
+                                    thelinks.add(tp)
+                                    state[links].add(LinkState { ls ->
+                                        ls[x1] = n1.x
+                                        ls[y1] = n1.y
+                                        ls[x2] = n2.x
+                                        ls[y2] = n2.y
+                                    })
+                                }
                             }
                         }
                     }, atop, abottom)
         }
         return res
     }
-
 }
-
