@@ -3,7 +3,6 @@ package org.gene
 import com.bftcom.ice.common.general.makeSure
 import com.bftcom.ice.common.general.throwImpossible
 import org.gene.Charges.FREE
-import org.gene.Urand.GetRandomMoveVector8
 import org.gene.moving.randomMoveOperator
 
 class DasWave(
@@ -22,6 +21,10 @@ class DasWave(
     }
 
     fun reset() {
+        pNodes.forEach {
+            if (it.position != null)
+                XY.freeXY(it.position!!)
+        }
         pNodes.clear()
         initNodes()
     }
@@ -33,6 +36,9 @@ class DasWave(
             pNodes.add(Node2(type, i, this))
         }
     }
+
+    val realNodes: List<Node2>
+        get() = pNodes.filter { it.isReal() }
 
     fun initLineInstance(direction: Boolean, startPosition: Point2) {
         val fromPrev = if (direction) v10 else v01
@@ -58,20 +64,19 @@ class DasWave(
                         var v2Prev: Point2? = null)
 
     fun selectPrevVirtPos(pNode: Node2, newPos: Point2, distPrev: Int, distNext: Int, ctx: SelectContext) {
-        if (pNode.isFirst()) {
+        if (pNode.isFirst())
             return selectNextVirtPos(pNode, newPos, distNext, ctx)
-        }
 
         //расстояние == 2
         if (distPrev == 3) {
-            ctx.vPrev = (newPos + pNode.prevReal()!!.position!!) / 2;
+            ctx.vPrev = (newPos + pNode.prevReal()!!.position!!) / 2
             if (XY.getChargeXY(ctx.vPrev!!) != FREE) return
         }
         //расстояние == sqrt(2)
         if (distPrev == 2) {
             val v1 = Point2(newPos.x, pNode.prevReal()!!.position!!.y)
             val v2 = Point2(pNode.prevReal()!!.position!!.x, newPos.y)
-            val K = if (XY.getChargeXY(v1) == FREE) 1 else 0 + if (XY.getChargeXY(v2) == FREE) 2 else 0
+            val K = (if (XY.getChargeXY(v1) == FREE) 1 else 0) + (if (XY.getChargeXY(v2) == FREE) 2 else 0)
             when (K) {
                 0 -> return
                 1 -> ctx.vPrev = v1
@@ -88,7 +93,7 @@ class DasWave(
         selectNextVirtPos(pNode, newPos, distNext, ctx)
     }
 
-    fun selectNextVirtPos(pNode: Node2, newPos: Point2, distNext: Int, ctx: SelectContext) {
+    private fun selectNextVirtPos(pNode: Node2, newPos: Point2, distNext: Int, ctx: SelectContext) {
 
         if (distNext == 1 || pNode.isLast()) {
             ctx.canSelect = true
@@ -99,8 +104,10 @@ class DasWave(
             ctx.vNext = (newPos + pNode.nextReal()!!.position!!) / 2
             if (XY.getChargeXY(ctx.vNext!!) != FREE) return
             if (ctx.vNext == ctx.vPrev) {
-                if (ctx.v2Prev == null) return
-                else ctx.vPrev = ctx.v2Prev
+                if (ctx.v2Prev == null)
+                    return
+                else
+                    ctx.vPrev = ctx.v2Prev
             }
             ctx.canSelect = true
             return
@@ -115,8 +122,10 @@ class DasWave(
                 1 -> {
                     ctx.vNext = v1
                     if (ctx.vNext == ctx.vPrev) {
-                        if (ctx.v2Prev == null) return
-                        else ctx.vPrev = ctx.v2Prev;
+                        if (ctx.v2Prev == null)
+                            return
+                        else
+                            ctx.vPrev = ctx.v2Prev
                     }
                     ctx.canSelect = true
                     return
@@ -124,15 +133,17 @@ class DasWave(
                 2 -> {
                     ctx.vNext = v2
                     if (ctx.vNext == ctx.vPrev) {
-                        if (ctx.v2Prev == null) return
-                        else ctx.vPrev = ctx.v2Prev
+                        if (ctx.v2Prev == null)
+                            return
+                        else
+                            ctx.vPrev = ctx.v2Prev
                     }
                     ctx.canSelect = true
                     return
                 }
                 3 -> {
                     if (getRandomInt(2) == 0) {
-                        val temp = v1;
+                        val temp = v1
                         v1 = v2
                         v2 = temp
                     }
@@ -224,7 +235,7 @@ object Charges {
     }
 }
 
-class Node2(var type: NodeType, internal var index: Int, var chain: DasWave) {
+class Node2(val type: NodeType, val index: Int, private val chain: DasWave) {
 
     var position: Point2? = null
 
