@@ -4,6 +4,7 @@ import com.bftcom.ice.common.general.makeSure
 import com.bftcom.ice.common.general.throwImpossible
 import org.gene.Charges.FREE
 import org.gene.Urand.GetRandomMoveVector8
+import org.gene.moving.randomMoveOperator
 
 class DasWave(
         val XY: Grid2,
@@ -46,39 +47,10 @@ class DasWave(
         }
     }
 
-    fun tryRandomMove():Boolean
-    {
-        return randomMoveOperator(pNodes[getRandomInt(N)*2])
+    fun tryRandomMove(): Boolean {
+        return randomMoveOperator(pNodes[getRandomInt(N) * 2])
     }
 
-    fun randomMoveOperator(pBufNode: Node2): Boolean {
-        makeSure(pBufNode.isReal())
-        val newPos = GetRandomMoveVector8() + pBufNode.position!!
-
-        //---!pFirst-&&-!pLast-----------------------------------
-        //1 - если ячейка занята и на ней не стоит свой ВЗ - выходим
-        if ((XY.getChargeXY(newPos) != FREE) &&
-                (newPos != pBufNode.prevVirt()?.position) && (newPos != pBufNode.next()?.position))
-            return false
-
-        //2 - проверка на расстояние
-        val distNext = dist1(newPos, pBufNode.nextReal()?.position)
-        val distPrev = dist1(newPos, pBufNode.prevReal()?.position)
-        if ((distNext>3) || (distPrev>3)) return false;
-        freeInnerAndItsVirtuals(pBufNode)
-
-        val ctx = SelectContext()
-        selectPrevVirtPos(pBufNode, newPos, distPrev, distNext, ctx)
-        if(ctx.canSelect)
-        {
-            pBufNode.position = newPos
-            pBufNode.prevVirt()?.position = ctx.vPrev
-            pBufNode.nextVirt()?.position = ctx.vNext
-        }
-        chargeInnerAndItsVirtuals(pBufNode)
-
-        return ctx.canSelect
-    }
 
     class SelectContext(var canSelect: Boolean = false,
                         var vPrev: Point2? = null,
@@ -149,7 +121,7 @@ class DasWave(
                     ctx.canSelect = true
                     return
                 }
-                2->{
+                2 -> {
                     ctx.vNext = v2
                     if (ctx.vNext == ctx.vPrev) {
                         if (ctx.v2Prev == null) return
@@ -158,13 +130,13 @@ class DasWave(
                     ctx.canSelect = true
                     return
                 }
-                3->{
+                3 -> {
                     if (getRandomInt(2) == 0) {
                         val temp = v1;
                         v1 = v2
                         v2 = temp
                     }
-                    ctx.vNext = ( if(v1 == ctx.vPrev) v2 else v1)
+                    ctx.vNext = (if (v1 == ctx.vPrev) v2 else v1)
                     ctx.canSelect = true
                     return
                 }
@@ -173,7 +145,7 @@ class DasWave(
 
     }
 
-    private fun freeInnerAndItsVirtuals(pBufNode: Node2) {
+    internal fun freeInnerAndItsVirtuals(pBufNode: Node2) {
         XY.freeXY(pBufNode.position!!)
 
         pBufNode.nextVirt()?.let {
@@ -188,22 +160,22 @@ class DasWave(
         }
     }
 
-    private fun chargeInnerAndItsVirtuals(pBufNode: Node2) {
+    internal fun chargeInnerAndItsVirtuals(pBufNode: Node2) {
         XY.chargeXY(pBufNode)
 
-        pBufNode.nextVirt()?.let {n->
+        pBufNode.nextVirt()?.let { n ->
             n.position?.let {
                 XY.chargeXY(n)
             }
         }
-        pBufNode.prevVirt()?.let {n->
+        pBufNode.prevVirt()?.let { n ->
             n.position?.let {
                 XY.chargeXY(n)
             }
         }
     }
 
-    fun printCoorinates() {
+    fun printCoordinates() {
 
         for (i in 0 until NU) {
             println(pNodes[i])

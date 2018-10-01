@@ -37,7 +37,7 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
         exec(Experiment2Service::getGridStateForView.name)
     }
 
-    private fun exec(functionName: String) {
+    private fun exec(functionName: String, vararg args: Any?) {
 
         updateState {
             loading = true
@@ -45,7 +45,7 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
         async {
             JsDataService.remoteCall(
                     Experiment2Service::class.simpleName!!,
-                    functionName)
+                    functionName, *args)
         }.then {
             val dm = buildDataMapFromJson(it.toString())
             if (dm != null)
@@ -89,7 +89,7 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
                             }
                         }
                         button("Новый эксперимент",
-                                onClick = { exec(Experiment2Service::newExperimentAndState.name) })
+                                onClick = { exec(Experiment2Service::newExperimentAndState.name, 16, N) })
                     }
                     div {
                         attrs {

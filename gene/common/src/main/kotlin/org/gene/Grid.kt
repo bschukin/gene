@@ -88,6 +88,8 @@ class Grid2(
         }
 
         fun charge(value: Byte) {
+            if(charge!=Charges.FREE && value!=Charges.FREE)
+                throw RuntimeException("cannot charge CELL [${this.point}]. It is already charged")
             charge = value
             node = null
         }

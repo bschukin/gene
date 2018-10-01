@@ -5,7 +5,7 @@ import org.gene.view.*
 
 interface Experiment2Service {
 
-    fun newExperimentAndState(): DataMapF<GridState>
+    fun newExperimentAndState(D: Int, N: Int): DataMapF<GridState>
     fun newExperiment(D: Int, N: Int)
     fun initLineInstance()
     fun getGridStateForView(): DataMapF<GridState>?

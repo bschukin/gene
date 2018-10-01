@@ -25,13 +25,13 @@ class DasWaveTests {
     public fun testCreateLineInstance()
     {
         //создаем решетку [-10; 10]
-        val grid = Grid2(10)
+        val grid = Grid2(16)
 
         //Создаем цепь длиной 5 в кооординатах (0,0)
         val daswave = DasWave(grid, 5)
         daswave.initLineInstance(false, Point2(0, 0))
 
-        daswave.printCoorinates()
+        daswave.printCoordinates()
 
         daswave.pNodes.forEach {
             println(it.toString())

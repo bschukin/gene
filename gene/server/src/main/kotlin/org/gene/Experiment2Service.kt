@@ -9,9 +9,9 @@ open class Experiment2ServiceImpl : Experiment2Service {
 
     var experiment2: Experiment2? = null
 
-    override fun newExperimentAndState(): DataMapF<GridState> {
+    override fun newExperimentAndState(D: Int, N: Int): DataMapF<GridState> {
 
-        newExperiment(16, 3)
+        newExperiment(D, N)
         initLineInstance()
         return getGridStateForView()!!
     }
