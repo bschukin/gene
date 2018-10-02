@@ -91,4 +91,12 @@ class ExperimentTests {
         }
     }
 
+    @Test
+     fun testTryRandomInstance() {
+        val e = Experiment2(16, 55)
+        e.initSimpleRandomConformation(Point2(7, 7))
+
+        e.grid.print()
+    }
+
 }

@@ -30,7 +30,7 @@ class Grid2(
         }
     }
 
-    fun getChargeXY(lat: Point2): Byte {
+    fun getXY(lat: Point2): Byte {
         return XY[D1 and lat.x][D1 and lat.y].charge
     }
 
@@ -62,7 +62,7 @@ class Grid2(
         var v: Point2? = null
         while (true) {
             v = getRandomPointInItsBox()
-            if (getChargeXY(v) == Charges.FREE) return v
+            if (getXY(v) == Charges.FREE) return v
         }
     }
 

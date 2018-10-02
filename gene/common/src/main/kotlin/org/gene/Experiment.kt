@@ -1,6 +1,7 @@
 package org.gene
 
 import com.bftcom.ice.common.maps.DataMapF
+import org.gene.init.initSimpleRandomInstance
 import org.gene.view.*
 
 interface Experiment2Service {
@@ -24,6 +25,10 @@ class Experiment2(val D: Int, N: Int) {
 
     fun initLineConformation(horisontal: Boolean, startPosition: Point2) {
         chain.initLineInstance(horisontal, startPosition)
+    }
+
+    fun initSimpleRandomConformation(startPosition: Point2, nOfTries:Int = 10000):Boolean {
+        return chain.initSimpleRandomInstance(startPosition, nOfTries)
     }
 
     fun reset() {

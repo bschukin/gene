@@ -71,6 +71,15 @@ public class UrandTest {
 
     }
 
+    @Test
+    fun intTests() {
+        val  N  = 3
+        println(N/2*2)
+
+        //10 10 10 10 10 10
+
+    }
+
 
 }
 

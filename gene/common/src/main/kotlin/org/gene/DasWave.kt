@@ -40,6 +40,12 @@ class DasWave(
     val realNodes: List<Node2>
         get() = pNodes.filter { it.isReal() }
 
+    val virtualNodes: List<Node2>
+        get() = pNodes.filter { it.isVirtual() }
+
+    val centerNodeIndex: Int
+        get() = N/2*2
+
     fun initLineInstance(direction: Boolean, startPosition: Point2) {
         val fromPrev = if (direction) v10 else v01
 
@@ -70,13 +76,13 @@ class DasWave(
         //расстояние == 2
         if (distPrev == 3) {
             ctx.vPrev = (newPos + pNode.prevReal()!!.position!!) / 2
-            if (XY.getChargeXY(ctx.vPrev!!) != FREE) return
+            if (XY.getXY(ctx.vPrev!!) != FREE) return
         }
         //расстояние == sqrt(2)
         if (distPrev == 2) {
             val v1 = Point2(newPos.x, pNode.prevReal()!!.position!!.y)
             val v2 = Point2(pNode.prevReal()!!.position!!.x, newPos.y)
-            val K = (if (XY.getChargeXY(v1) == FREE) 1 else 0) + (if (XY.getChargeXY(v2) == FREE) 2 else 0)
+            val K = (if (XY.getXY(v1) == FREE) 1 else 0) + (if (XY.getXY(v2) == FREE) 2 else 0)
             when (K) {
                 0 -> return
                 1 -> ctx.vPrev = v1
@@ -102,7 +108,7 @@ class DasWave(
 
         if (distNext == 3) {
             ctx.vNext = (newPos + pNode.nextReal()!!.position!!) / 2
-            if (XY.getChargeXY(ctx.vNext!!) != FREE) return
+            if (XY.getXY(ctx.vNext!!) != FREE) return
             if (ctx.vNext == ctx.vPrev) {
                 if (ctx.v2Prev == null)
                     return
@@ -116,7 +122,7 @@ class DasWave(
         if (distNext == 2) {
             var v1 = Point2(newPos.x, pNode.nextReal()!!.position!!.y)
             var v2 = Point2(pNode.nextReal()!!.position!!.x, newPos.y)
-            val K = (if (XY.getChargeXY(v1) == FREE) 1 else 0) + (if (XY.getChargeXY(v2) == FREE) 2 else 0)
+            val K = (if (XY.getXY(v1) == FREE) 1 else 0) + (if (XY.getXY(v2) == FREE) 2 else 0)
             when (K) {
                 0 -> return
                 1 -> {
@@ -245,6 +251,12 @@ class Node2(val type: NodeType, val index: Int, private val chain: DasWave) {
                 ", position=" + position +
                 ", index=" + index +
                 '}'.toString()
+    }
+
+    fun setPositionOnGrid(pos:Point2)
+    {
+        this.position = pos
+        this.chain.XY.chargeXY(this)
     }
 
     fun isLast(): Boolean = this.index == chain.pNodes.size - 1

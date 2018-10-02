@@ -5,11 +5,11 @@ import org.gene.*
 
 fun DasWave.randomMoveOperator(pBufNode: Node2): Boolean {
     makeSure(pBufNode.isReal())
-    val newPos = Urand.GetRandomMoveVector8() + pBufNode.position!!
+    val newPos = getRandomMoveVector8() + pBufNode.position!!
 
     //---!pFirst-&&-!pLast-----------------------------------
     //1 - если ячейка занята и на ней не стоит свой ВЗ - выходим
-    if ((XY.getChargeXY(newPos) != Charges.FREE) &&
+    if ((XY.getXY(newPos) != Charges.FREE) &&
             (newPos != pBufNode.prevVirt()?.position) && (newPos != pBufNode.next()?.position))
         return false
 

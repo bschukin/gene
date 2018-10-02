@@ -34,22 +34,33 @@ object Urand {
         seed = start_seed
     }
 
+}
 
-    fun GetRandomMoveVector8(): Vector2 {
-        when (getRandomInt(8)) {
-            0 -> return v_1_1
-            1 -> return v0_1
-            2 -> return v1_1
-            3 -> return v_10
-            4 -> return v10
-            5 -> return v_11
-            6 -> return v01
-            7 -> return v11
-        }
-        throw throwImpossible()
+fun getRandomMoveVector8(): Vector2 {
+    when (getRandomInt(8)) {
+        0 -> return v_1_1
+        1 -> return v0_1
+        2 -> return v1_1
+        3 -> return v_10
+        4 -> return v10
+        5 -> return v_11
+        6 -> return v01
+        7 -> return v11
+    }
+    throw throwImpossible()
+}
+
+fun getRandomMoveVector4():Vector2
+{
+    when ( getRandomInt(4) )
+    {
+        0->  return v_10
+        1->  return v10
+        2->	 return v0_1
+        3->	 return v01
     }
 
-
+    throw throwImpossible()
 }
 
 fun urand() = Urand.urand()
