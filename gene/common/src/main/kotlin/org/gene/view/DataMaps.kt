@@ -1,10 +1,10 @@
 package org.gene.view
 
-import org.gene.*
 import com.bftcom.ice.common.maps.DataMapF
 import com.bftcom.ice.common.maps.Field
 import com.bftcom.ice.common.maps.MappingFieldSet
 import com.bftcom.ice.common.maps.Transience
+import org.gene.Point2
 
 object PointState : MappingFieldSet<PointState>("PointState", "", null, Transience)
 {
@@ -39,6 +39,7 @@ object LinkState : MappingFieldSet<LinkState>("LinkState", "", null, Transience)
 object GridState : MappingFieldSet<GridState>("GridState", "", null, Transience)
 {
     val id = Field.id()
+    val D  = Field.intNN("D")
     val top = Field.jsonObj("top", PointState)
     val bottom = Field.jsonObj("bottom", PointState)
 

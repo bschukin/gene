@@ -10,7 +10,7 @@ open class Experiment2ServiceImpl : Experiment2Service {
     var experiment2: Experiment2? = null
 
     override fun newExperimentAndState(D: Int, N: Int): DataMapF<GridState> {
-
+        println("sdadadsasdasdasdasdasdasda")
         newExperiment(D, N)
         initSimpleRandomInstance()
         return getGridStateForView()!!
@@ -26,7 +26,7 @@ open class Experiment2ServiceImpl : Experiment2Service {
     }
 
     fun initSimpleRandomInstance() {
-        experiment2!!.initSimpleRandomConformation(Point2(experiment2!!.D/2, experiment2!!.D/2), 100000)
+        experiment2!!.initSimpleRandomConformation(Point2(experiment2!!.D/2, experiment2!!.D/2), 1000000)
     }
 
     override fun getGridStateForView(): DataMapF<GridState>? {

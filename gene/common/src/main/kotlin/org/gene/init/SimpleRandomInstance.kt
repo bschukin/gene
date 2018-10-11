@@ -16,7 +16,7 @@ fun DasWave.initSimpleRandomInstance(center: Point2, NOfTries: Int): Boolean {
             return true
         }
     }
-    println("((((((((")
+    println("(((($NOfTries((((")
     return false
 }
 

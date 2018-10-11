@@ -2,7 +2,10 @@ package org.gene
 
 import com.bftcom.ice.common.maps.DataMapF
 import org.gene.init.initSimpleRandomInstance
-import org.gene.view.*
+import org.gene.view.CellState
+import org.gene.view.GridState
+import org.gene.view.LinkState
+import org.gene.view.PointState
 
 interface Experiment2Service {
 
@@ -39,6 +42,7 @@ class Experiment2(val D: Int, N: Int) {
     fun getGridStateForView(atop: Point2 = Point2(0, 0), abottom: Point2 = Point2(D1, D1)): DataMapF<GridState> {
         val res = GridState { state ->
             state[id] = 100
+            state[D] = grid.D
             state[top] = PointState.fromPoint(atop)
             state[bottom] = PointState.fromPoint(abottom)
 

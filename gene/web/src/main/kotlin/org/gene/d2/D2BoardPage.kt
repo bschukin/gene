@@ -76,7 +76,7 @@ class D2BoardPage(props: FormProps) : AbstractEditForm<FormProps, D2BoardPage.St
 
                         InputNumber {
                             attrs {
-                                value = N
+                                defaultValue = N
                                 onChange = { N = it }
                             }
                         }
